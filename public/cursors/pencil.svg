@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+  <!-- Pencil Tip Hotspot at (2, 33) -->
+  <g transform="translate(1.5, -1.5)" opacity="0.25">
+    <path d="M 2,33 L 4,26 L 24,6 L 29,11 L 9,31 Z" fill="#2c2a26" />
+  </g>
+
+  <!-- Pencil Body (Yellow classic pencil) -->
+  <polygon points="4,26 24,6 29,11 9,31" fill="#fde047" stroke="#2c2a26" stroke-width="2.2" stroke-linejoin="round" />
+  <!-- Stripe down pencil -->
+  <line x1="14" y1="16" x2="26.5" y2="8.5" stroke="#eab308" stroke-width="1.8" />
+  <line x1="6.5" y1="28.5" x2="16.5" y2="18.5" stroke="#ca8a04" stroke-width="1.8" />
+
+  <!-- Wooden collar -->
+  <polygon points="2,33 4,26 9,31" fill="#fde68a" stroke="#2c2a26" stroke-width="2" stroke-linejoin="round" />
+  <!-- Graphite Lead tip -->
+  <polygon points="2,33 3.2,29 6.2,32" fill="#2c2a26" />
+
+  <!-- Metal Ferrule (Silver) -->
+  <polygon points="24,6 26.5,3.5 31.5,8.5 29,11" fill="#cbd5e1" stroke="#2c2a26" stroke-width="2" stroke-linejoin="round" />
+
+  <!-- Pink Eraser -->
+  <path d="M 26.5,3.5 C 27.5,2.5 30,1 31.5,2.5 C 33,4 32.5,6.5 31.5,8.5 Z" fill="#ea7684" stroke="#2c2a26" stroke-width="2" stroke-linejoin="round" />
+</svg>
