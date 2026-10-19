@@ -111,16 +111,16 @@ const playTelephoneRing = () => {
     const now = ctx.currentTime;
     
     // Tring ... Tring
-    createPulse(now, 0.4);
-    createPulse(now + 0.6, 0.4);
+    createPulse(now + 0.05, 0.35);
+    createPulse(now + 0.55, 0.35);
     
     // Tring ... Tring
-    createPulse(now + 2.5, 0.4);
-    createPulse(now + 3.1, 0.4);
+    createPulse(now + 1.45, 0.35);
+    createPulse(now + 1.95, 0.35);
     
     setTimeout(() => {
       if (ctx.state !== 'closed') ctx.close();
-    }, 4500);
+    }, 2800);
   } catch (e) {
     console.error("Failed to play ring", e);
   }
@@ -145,7 +145,7 @@ const AnimatedCord = ({ isWobbling }: { isWobbling: boolean }) => {
             }
           : { scaleX: 1, scaleY: 1, rotate: 0 }
       }
-      transition={{ duration: 4.0, ease: "easeInOut" }}
+      transition={{ duration: isWobbling ? 2.6 : 4.0, ease: "easeInOut" }}
       style={{ transformOrigin: "235px 530px" }}
     />
   );
@@ -158,6 +158,7 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
   const [isWobbling, setIsWobbling] = useState(false);
   const lastTickAngle = useRef(0);
   const [hasBeenPoked, setHasBeenPoked] = useState(false);
+  const hasAutoTurned = useRef(false);
   const [isLaptop, setIsLaptop] = useState(
     typeof window !== 'undefined' ? window.innerWidth >= 768 : true
   );
@@ -169,6 +170,52 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Pre-load audio & unlock on first user gesture
+  useEffect(() => {
+    initAudio();
+
+    const unlockAudio = () => {
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+      if ((window as any).typewriterCtx && (window as any).typewriterCtx.state === 'suspended') {
+        (window as any).typewriterCtx.resume().catch(() => {});
+      }
+    };
+
+    window.addEventListener('pointerdown', unlockAudio, { once: true });
+    window.addEventListener('keydown', unlockAudio, { once: true });
+
+    // On initial page landing, turn the dialpad automatically to reveal the phone message
+    const autoTurnTimer = setTimeout(async () => {
+      if (hasAutoTurned.current || hasBeenPoked) return;
+      hasAutoTurned.current = true;
+
+      // Hole index 1 (number '2') gives a prominent, tactile ~101 degree sweep
+      const holeIndex = 1;
+      const maxRot = 40 - (-35 - (holeIndex * 26));
+
+      try {
+        // Smoothly wind dial to finger stop
+        await animate(rotation, maxRot, { duration: 0.65, ease: [0.25, 0.1, 0.25, 1] });
+        await new Promise(r => setTimeout(r, 120));
+        // Spring recoil return
+        await animate(rotation, 0, { type: "spring", stiffness: 85, damping: 14 });
+        
+        // Trigger phone ringing wobble & reveal message
+        triggerRing();
+      } catch (e) {
+        triggerRing();
+      }
+    }, 850);
+
+    return () => {
+      clearTimeout(autoTurnTimer);
+      window.removeEventListener('pointerdown', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+    };
   }, []);
   
   useMotionValueEvent(rotation, "change", (latest) => {
@@ -205,7 +252,7 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
     const timer = setTimeout(() => {
       setIsWobbling(false);
       if (onTextStart) onTextStart();
-    }, 4200);
+    }, 2600);
   };
 
   const holesData = [
@@ -237,6 +284,7 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
 
   const handlePointerDown = (e: PointerEvent<SVGGElement>, index: number, action: string) => {
     if (!svgRef.current || isWobbling) return;
+    hasAutoTurned.current = true;
     e.currentTarget.setPointerCapture(e.pointerId);
     
     const rect = svgRef.current.getBoundingClientRect();
@@ -288,6 +336,7 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       if (isDragging) return;
+      hasAutoTurned.current = true;
       const maxRotation = 40 - (-35 - (index * 26));
       await animate(rotation, maxRotation, { duration: maxRotation * 0.0035, ease: "easeIn" });
       await new Promise(r => setTimeout(r, 150));
@@ -308,7 +357,7 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
         rotate: [0, -18, 12, -15, 10, -8, 5, -2, 0],
         scaleX: [1, 0.9, 1.1, 0.95, 1.05, 0.98, 1.02, 0.99, 1],
         scaleY: [1, 1.1, 0.9, 1.05, 0.95, 1.02, 0.98, 1.01, 1],
-        transition: { duration: 4.0, ease: "easeInOut" }
+        transition: { duration: 2.6, ease: "easeInOut" }
       }
     : !isDragging
     ? {
@@ -620,7 +669,7 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
               return (
                 <g 
                   key={`hole-${h.id}`}
-                  className="hole"
+                  className="hole cursor-pointer"
                   onPointerDown={(e) => handlePointerDown(e, i, h.action)}
                   onPointerMove={handlePointerMove}
                   onPointerUp={handlePointerUp}
@@ -629,6 +678,7 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
                   tabIndex={isDragging ? -1 : 0}
                   style={{ cursor: isDragging ? 'grabbing' : 'grab', outline: 'none', transformOrigin: `${cx}px ${cy}px`, touchAction: 'none' }}
                 >
+                  <title>{h.num === '0' ? 'Dial 0 (Hang Up)' : `Dial ${h.num}`}</title>
                   <circle cx={cx} cy={cy} r="13" fill="#ffffff" stroke="#2c2a26" strokeWidth="5" filter="url(#rough-light)" />
                   <circle cx={cx} cy={cy} r="12.5" fill="transparent" stroke="url(#metallic)" strokeWidth="3" filter="url(#rough-light)" className="transition-all duration-150" />
                   <circle cx={cx} cy={cy} r="11" fill="transparent" stroke="#2c2a26" strokeWidth="1" filter="url(#rough-light)" />

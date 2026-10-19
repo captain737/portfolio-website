@@ -68,7 +68,7 @@ export function Popups({ activePopup, onClose, onNavigate }: PopupsProps) {
               </button>
             )}
             {title && (
-              <h2 className="font-pixel text-[11px] sm:text-sm md:text-base font-bold tracking-wide m-0 leading-tight truncate text-ink">{title}</h2>
+              <h2 className="font-pixel text-[11px] sm:text-sm md:text-base font-bold tracking-wide m-0 leading-tight truncate text-ink uppercase">{title}</h2>
             )}
           </div>
           <button 
@@ -90,200 +90,202 @@ export function Popups({ activePopup, onClose, onNavigate }: PopupsProps) {
   return (
     <AnimatePresence>
       {activePopup === 'WHO' && (
-        <Window key="popup-who" title="W — WHO?">
-          <p className="mb-4 text-base sm:text-lg md:text-xl font-pixel-body font-medium">
-            <strong className="font-pixel text-sm sm:text-base block mb-2 text-ink">Pragya Silwal</strong>
-            Product person. Builder. Curious about why people do what they do — and how to make products they actually want to use.
-          </p>
-          <hr className="border-t-2 border-ink my-4" />
-          <div className="flex flex-wrap gap-2 mb-6">
-            <span className="border-2 border-ink px-2 py-0.5 text-[9px] tracking-wider uppercase font-pixel bg-pink-100 font-bold text-ink">Product</span>
-            <span className="border-2 border-ink px-2 py-0.5 text-[9px] tracking-wider uppercase font-pixel bg-yellow-100 font-bold text-ink">Growth</span>
-            <span className="border-2 border-ink px-2 py-0.5 text-[9px] tracking-wider uppercase font-pixel bg-sky-100 font-bold text-ink">Experimentation</span>
-            <span className="border-2 border-ink px-2 py-0.5 text-[9px] tracking-wider uppercase font-pixel bg-emerald-100 font-bold text-ink">AI</span>
-            <span className="border-2 border-ink px-2 py-0.5 text-[9px] tracking-wider uppercase font-pixel bg-purple-100 font-bold text-ink">Consumer</span>
+        <Window key="popup-who" title="LEARN MORE ABOUT ME" maxWidthClass="max-w-2xl">
+          <div className="text-xs sm:text-sm md:text-base font-story space-y-3.5 sm:space-y-4 text-ink/90 leading-relaxed">
+            <p className="font-semibold text-sm sm:text-base text-ink">
+              Hey, I'm Pragya! I'm an Economics and Data Science student at Bryn Mawr College.
+            </p>
+
+            <p>
+              My work sits at the intersection of technology, product, and people. I've built AI-powered tools, launched consumer apps, worked on economic research, and helped turn early-stage ideas into real products. I'm drawn to ideas that make everyday life a little easier, more interesting, or simply more fun.
+            </p>
+
+            <p>
+              After high school, I took a gap year and worked with a nonprofit teaching storytelling to kids in the remote hills of Nepal. Since then, I've trekked through mountains, ridden motorcycles across the country, and learned just as much from unexpected conversations as I have from classrooms.
+            </p>
+
+            <p>
+              I occasionally{' '}
+              <a 
+                href="https://substack.com/@paraguay" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="underline font-bold text-ink hover:text-red-600 transition-colors inline-flex items-center gap-0.5"
+              >
+                write on Substack <ExternalLink className="w-3 h-3 text-current inline" />
+              </a>
+              {' '}and{' '}
+              <a 
+                href="https://www.tiktok.com/@captaincool737" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="underline font-bold text-ink hover:text-red-600 transition-colors inline-flex items-center gap-0.5"
+              >
+                make short videos <ExternalLink className="w-3 h-3 text-current inline" />
+              </a>
+              {' '}about navigating personal finance as a young adult.
+            </p>
+
+            <p>
+              I love good stories, thoughtful design, spontaneous adventures, and meeting people who see the world differently. Mostly, I'm just curious about life and enjoy turning that curiosity into things worth making, sharing, and experiencing.
+            </p>
           </div>
-          
-          <div className="flex flex-wrap gap-3 pt-3">
-            <button onClick={() => onNavigate('PROJECTS')} className="px-3.5 py-2 pixel-btn bg-white hover:bg-ink hover:text-paper transition-colors uppercase font-bold tracking-wider font-pixel text-[9px] sm:text-xs cursor-pointer">
-              ▶ PROJECTS
+
+          <div className="flex flex-wrap gap-2.5 pt-4 mt-6 border-t-2 border-ink/20">
+            <button onClick={() => onNavigate('PROJECTS')} className="px-3 py-1.5 pixel-btn bg-white hover:bg-ink hover:text-paper transition-colors uppercase font-bold font-pixel text-[9px] cursor-pointer">
+              ▶ 2: PERSONAL PROJECTS
             </button>
-            <button onClick={() => onNavigate('EXPERIENCE')} className="px-3.5 py-2 pixel-btn bg-white hover:bg-ink hover:text-paper transition-colors uppercase font-bold tracking-wider font-pixel text-[9px] sm:text-xs cursor-pointer">
-              ▶ EXPERIENCE
-            </button>
-            <button onClick={() => onNavigate('CONTACT')} className="px-3.5 py-2 pixel-btn bg-white hover:bg-ink hover:text-paper transition-colors uppercase font-bold tracking-wider font-pixel text-[9px] sm:text-xs cursor-pointer">
-              ▶ CONTACT
+            <button onClick={() => onNavigate('CONTACT')} className="px-3 py-1.5 pixel-btn bg-white hover:bg-ink hover:text-paper transition-colors uppercase font-bold font-pixel text-[9px] cursor-pointer">
+              ▶ 3: LEAVE A MESSAGE
             </button>
           </div>
         </Window>
       )}
 
       {activePopup === 'PROJECTS' && (
-        <Window key="popup-projects" title="A — WHAT HAVE YOU BUILT?" maxWidthClass="max-w-[1300px] w-full sm:w-[94vw] lg:w-[92vw]">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5 items-stretch">
+        <Window key="popup-projects" title="Personal Projects" maxWidthClass="max-w-4xl w-full sm:w-[94vw] lg:w-[88vw]">
+          <div className="flex flex-col gap-3 sm:gap-3.5">
             {/* CardFit */}
-            <div className="p-3 sm:p-4 pixel-box bg-[#fbf9f2] flex flex-col justify-between hover:bg-white transition-colors group">
-              <div>
-                <div 
-                  onClick={() => onNavigate('PROJECT_CARDFIT')}
-                  className="cursor-pointer"
-                >
-                  <div className="w-full h-20 sm:h-24 md:h-28 bg-[#d9d1ef] border-2 border-ink flex items-center justify-center mb-2.5 group-hover:scale-[1.02] transition-transform overflow-hidden p-1.5 sm:p-2">
-                    <img 
-                      src="/cardfit_preview.jpg" 
-                      alt="CardFit - Credit Card Discovery" 
-                      className="w-full h-full object-cover shadow-xs"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <div className="flex items-center gap-1.5 mb-2 flex-wrap">
-                    <a 
-                      href="https://cardfit.me" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="font-pixel text-xs sm:text-sm font-bold hover:underline flex items-center gap-1 text-ink"
-                    >
-                      CardFit <ExternalLink className="w-3 h-3 text-ink/70" />
-                    </a>
-                    <span className="text-[9px] uppercase font-pixel px-1.5 py-0.5 border-2 border-ink bg-purple-100 font-bold">FinTech</span>
-                    <a 
-                      href="https://cardfit.me" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      onClick={(e) => e.stopPropagation()}
-                      className="text-[9px] font-pixel text-ink/80 hover:text-ink underline"
-                    >
-                      cardfit.me
-                    </a>
-                  </div>
-                  <p className="text-xs sm:text-sm font-story leading-relaxed text-ink/85 mb-3 line-clamp-3">
-                    Credit card discovery platform that uses live card data and a personalized ranking engine to help users find the right card.
-                  </p>
-                </div>
+            <div className="p-2.5 sm:p-3 pixel-box bg-[#fbf9f2] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 hover:bg-white transition-colors group">
+              {/* Thumbnail */}
+              <div 
+                onClick={() => onNavigate('PROJECT_CARDFIT')}
+                className="w-full sm:w-44 md:w-52 h-24 sm:h-24 bg-[#d9d1ef] border-2 border-ink flex items-center justify-center flex-shrink-0 group-hover:scale-[1.02] transition-transform overflow-hidden p-1.5 cursor-pointer"
+                title="View CardFit story"
+              >
+                <img 
+                  src="/cardfit_preview.jpg" 
+                  alt="CardFit - Credit Card Discovery" 
+                  className="w-full h-full object-cover shadow-xs"
+                  referrerPolicy="no-referrer"
+                />
               </div>
-              <div className="flex items-center gap-2 pt-2 border-t-2 border-ink/20">
+
+              {/* Info / Description */}
+              <div 
+                onClick={() => onNavigate('PROJECT_CARDFIT')}
+                className="flex-1 min-w-0 cursor-pointer flex flex-col justify-center"
+              >
+                <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                  <a 
+                    href="https://cardfit.me" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="font-pixel text-xs sm:text-sm font-bold hover:underline flex items-center gap-1 text-ink"
+                  >
+                    CardFit <ExternalLink className="w-3 h-3 text-ink/70" />
+                  </a>
+                </div>
+                <p className="text-xs sm:text-sm font-story leading-snug sm:leading-relaxed text-ink/85 line-clamp-2">
+                  Credit card discovery platform that uses live card data and a personalized ranking engine to help users find the right card.
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-center sm:w-28 flex-shrink-0 border-t-2 sm:border-t-0 sm:border-l-2 border-ink/20 pt-2 sm:pt-0 sm:pl-3">
                 <button 
                   onClick={() => onNavigate('PROJECT_CARDFIT')}
-                  className="flex-1 py-1.5 px-2 pixel-btn text-[9px] font-pixel font-bold text-ink bg-yellow-100 hover:bg-yellow-200 transition-colors text-center cursor-pointer"
+                  className="w-full py-1.5 px-2 pixel-btn text-[9px] font-pixel font-bold text-ink bg-yellow-100 hover:bg-yellow-200 transition-colors text-center cursor-pointer"
                 >
                   STORY →
                 </button>
-                <a 
-                  href="https://cardfit.me" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex-1 py-1.5 px-2 pixel-btn bg-white hover:bg-ink hover:text-paper transition-colors text-[9px] font-pixel font-bold text-ink flex items-center justify-center gap-1 cursor-pointer"
-                  title="Visit cardfit.me in new tab"
-                >
-                  <span>VISIT</span>
-                  <ExternalLink className="w-2.5 h-2.5 text-current" />
-                </a>
               </div>
             </div>
 
             {/* Noor Azaan */}
-            <div className="p-3 sm:p-4 pixel-box bg-[#fbf9f2] flex flex-col justify-between hover:bg-white transition-colors group">
-              <div>
-                <div 
-                  onClick={() => onNavigate('PROJECT_NOOR')}
-                  className="cursor-pointer"
-                >
-                  <div className="w-full h-20 sm:h-24 md:h-28 bg-[#cbddd5] border-2 border-ink flex items-center justify-center mb-2.5 group-hover:scale-[1.02] transition-transform overflow-hidden p-1.5 sm:p-2">
-                    <img 
-                      src="/noor_azaan_icon.jpg" 
-                      alt="Noor Azaan - Islamic Prayer App" 
-                      className="h-full object-contain shadow-xs"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <div className="flex items-center gap-1.5 mb-2 flex-wrap">
-                    <a 
-                      href="https://apps.apple.com/us/app/noor-azaan/id6759352271" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="font-pixel text-xs sm:text-sm font-bold hover:underline flex items-center gap-1 text-ink"
-                    >
-                      Noor Azaan <ExternalLink className="w-3 h-3 text-ink/70" />
-                    </a>
-                    <span className="text-[9px] uppercase font-pixel px-1.5 py-0.5 border-2 border-ink bg-emerald-100 font-bold">FaithTech</span>
-                    <span className="text-[8px] font-pixel text-ink/70">iOS</span>
-                  </div>
-                  <p className="text-xs sm:text-sm font-story leading-relaxed text-ink/85 mb-3 line-clamp-3">
-                    A modern lifestyle & prayer app for Gen Z Muslims designed for everyday routines. Currently live on the App Store!
-                  </p>
-                </div>
+            <div className="p-2.5 sm:p-3 pixel-box bg-[#fbf9f2] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 hover:bg-white transition-colors group">
+              {/* Thumbnail */}
+              <div 
+                onClick={() => onNavigate('PROJECT_NOOR')}
+                className="w-full sm:w-44 md:w-52 h-24 sm:h-24 bg-[#cbddd5] border-2 border-ink flex items-center justify-center flex-shrink-0 group-hover:scale-[1.02] transition-transform overflow-hidden p-1.5 cursor-pointer"
+                title="View Noor Azaan story"
+              >
+                <img 
+                  src="/noor_azaan_icon.jpg" 
+                  alt="Noor Azaan - Islamic Prayer App" 
+                  className="h-full object-contain shadow-xs"
+                  referrerPolicy="no-referrer"
+                />
               </div>
-              <div className="flex items-center gap-2 pt-2 border-t-2 border-ink/20">
+
+              {/* Info / Description */}
+              <div 
+                onClick={() => onNavigate('PROJECT_NOOR')}
+                className="flex-1 min-w-0 cursor-pointer flex flex-col justify-center"
+              >
+                <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                  <a 
+                    href="https://apps.apple.com/us/app/noor-azaan/id6759352271" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="font-pixel text-xs sm:text-sm font-bold hover:underline flex items-center gap-1 text-ink"
+                  >
+                    Noor Azaan <ExternalLink className="w-3 h-3 text-ink/70" />
+                  </a>
+                </div>
+                <p className="text-xs sm:text-sm font-story leading-snug sm:leading-relaxed text-ink/85 line-clamp-2">
+                  A modern lifestyle & prayer app for Gen Z Muslims designed for everyday routines. Currently live on the App Store!
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-center sm:w-28 flex-shrink-0 border-t-2 sm:border-t-0 sm:border-l-2 border-ink/20 pt-2 sm:pt-0 sm:pl-3">
                 <button 
                   onClick={() => onNavigate('PROJECT_NOOR')}
-                  className="flex-1 py-1.5 px-2 pixel-btn text-[9px] font-pixel font-bold text-ink bg-yellow-100 hover:bg-yellow-200 transition-colors text-center cursor-pointer"
+                  className="w-full py-1.5 px-2 pixel-btn text-[9px] font-pixel font-bold text-ink bg-yellow-100 hover:bg-yellow-200 transition-colors text-center cursor-pointer"
                 >
                   STORY →
                 </button>
-                <a 
-                  href="https://apps.apple.com/us/app/noor-azaan/id6759352271" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex-1 py-1.5 px-2 pixel-btn bg-white hover:bg-ink hover:text-paper transition-colors text-[9px] font-pixel font-bold text-ink flex items-center justify-center gap-1 cursor-pointer"
-                  title="View on App Store"
-                >
-                  <span>APP STORE</span>
-                  <ExternalLink className="w-2.5 h-2.5 text-current" />
-                </a>
               </div>
             </div>
 
             {/* RateMySemesterAbroad */}
-            <div className="p-3 sm:p-4 pixel-box bg-[#fbf9f2] flex flex-col justify-between hover:bg-white transition-colors group">
-              <div>
-                <div 
-                  onClick={() => onNavigate('PROJECT_RMSA')}
-                  className="cursor-pointer"
-                >
-                  <div className="w-full h-20 sm:h-24 md:h-28 bg-[#e3dec9] border-2 border-ink flex items-center justify-center mb-2.5 group-hover:scale-[1.02] transition-transform overflow-hidden p-1.5 sm:p-2">
-                    <img 
-                      src="/ratemy_preview.jpg" 
-                      alt="RateMySemesterAbroad - Looking Beyond the Brochure" 
-                      className="w-full h-full object-cover shadow-xs"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <div className="flex items-center gap-1.5 mb-2 flex-wrap">
-                    <a 
-                      href="https://www.haverford.edu/marketing-and-communications/news/looking-beyond-brochure" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="font-pixel text-[11px] sm:text-xs font-bold hover:underline flex items-center gap-1 text-ink"
-                    >
-                      RateMySemesterAbroad <ExternalLink className="w-3 h-3 text-ink/70" />
-                    </a>
-                    <span className="text-[9px] uppercase font-pixel px-1.5 py-0.5 border-2 border-ink bg-sky-100 font-bold">EdTech</span>
-                  </div>
-                  <p className="text-xs sm:text-sm font-story leading-relaxed text-ink/85 mb-3 line-clamp-3">
-                    Built a platform that helps students compare study abroad programs through verified reviews and first-hand experiences.
-                  </p>
-                </div>
+            <div className="p-2.5 sm:p-3 pixel-box bg-[#fbf9f2] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 hover:bg-white transition-colors group">
+              {/* Thumbnail */}
+              <div 
+                onClick={() => onNavigate('PROJECT_RMSA')}
+                className="w-full sm:w-44 md:w-52 h-24 sm:h-24 bg-[#e3dec9] border-2 border-ink flex items-center justify-center flex-shrink-0 group-hover:scale-[1.02] transition-transform overflow-hidden p-1.5 cursor-pointer"
+                title="View RateMySemesterAbroad story"
+              >
+                <img 
+                  src="/ratemy_preview.jpg" 
+                  alt="RateMySemesterAbroad - Looking Beyond the Brochure" 
+                  className="w-full h-full object-cover shadow-xs"
+                  referrerPolicy="no-referrer"
+                />
               </div>
-              <div className="flex items-center gap-2 pt-2 border-t-2 border-ink/20">
+
+              {/* Info / Description */}
+              <div 
+                onClick={() => onNavigate('PROJECT_RMSA')}
+                className="flex-1 min-w-0 cursor-pointer flex flex-col justify-center"
+              >
+                <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                  <a 
+                    href="https://www.haverford.edu/marketing-and-communications/news/looking-beyond-brochure" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="font-pixel text-[11px] sm:text-xs font-bold hover:underline flex items-center gap-1 text-ink"
+                  >
+                    RateMySemesterAbroad <ExternalLink className="w-3 h-3 text-ink/70" />
+                  </a>
+                </div>
+                <p className="text-xs sm:text-sm font-story leading-snug sm:leading-relaxed text-ink/85 line-clamp-2">
+                  Built a platform that helps students compare study abroad programs through verified reviews and first-hand experiences.
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-center sm:w-28 flex-shrink-0 border-t-2 sm:border-t-0 sm:border-l-2 border-ink/20 pt-2 sm:pt-0 sm:pl-3">
                 <button 
                   onClick={() => onNavigate('PROJECT_RMSA')}
-                  className="flex-1 py-1.5 px-2 pixel-btn text-[9px] font-pixel font-bold text-ink bg-yellow-100 hover:bg-yellow-200 transition-colors text-center cursor-pointer"
+                  className="w-full py-1.5 px-2 pixel-btn text-[9px] font-pixel font-bold text-ink bg-yellow-100 hover:bg-yellow-200 transition-colors text-center cursor-pointer"
                 >
                   STORY →
                 </button>
-                <a 
-                  href="https://www.haverford.edu/marketing-and-communications/news/looking-beyond-brochure" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex-1 py-1.5 px-2 pixel-btn bg-white hover:bg-ink hover:text-paper transition-colors text-[9px] font-pixel font-bold text-ink flex items-center justify-center gap-1 cursor-pointer"
-                  title="Read Haverford Feature"
-                >
-                  <span>FEATURE</span>
-                  <ExternalLink className="w-2.5 h-2.5 text-current" />
-                </a>
               </div>
             </div>
           </div>
@@ -292,29 +294,33 @@ export function Popups({ activePopup, onClose, onNavigate }: PopupsProps) {
 
       {activePopup === 'PROJECT_CARDFIT' && (
         <Window key="popup-cardfit" onBack={() => onNavigate('PROJECTS')} maxWidthClass="max-w-4xl sm:w-[90vw] lg:w-[82vw] max-w-[920px]">
-          <div className="mb-4 sm:mb-6 flex items-center gap-3 sm:gap-4">
-            <a 
-              href="https://cardfit.me" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="w-12 h-12 sm:w-16 sm:h-16 pixel-box bg-[#d9d1ef] border-2 border-ink flex items-center justify-center flex-shrink-0 overflow-hidden p-0.5 shadow-xs hover:scale-105 transition-transform"
-              title="Open cardfit.me"
-            >
-              <img 
-                src="/cardfit_preview.jpg" 
-                alt="CardFit" 
-                className="w-full h-full object-cover" 
-                referrerPolicy="no-referrer"
-              />
-            </a>
-            <div>
+          <div className="mb-4 sm:mb-5 pb-3 border-b-2 border-ink/20">
+            <div className="flex items-center gap-3 sm:gap-4 mb-3">
+              <a 
+                href="https://cardfit.me" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-12 h-12 sm:w-16 sm:h-16 pixel-box bg-[#d9d1ef] border-2 border-ink flex items-center justify-center flex-shrink-0 overflow-hidden p-0.5 shadow-xs hover:scale-105 transition-transform"
+                title="Open cardfit.me"
+              >
+                <img 
+                  src="/cardfit_preview.jpg" 
+                  alt="CardFit" 
+                  className="w-full h-full object-cover" 
+                  referrerPolicy="no-referrer"
+                />
+              </a>
               <h3 className="text-base sm:text-lg md:text-xl font-bold leading-tight text-ink font-pixel">
                 CardFit
               </h3>
-              <p className="opacity-85 text-xs sm:text-sm font-story mt-1.5 leading-relaxed">
-                <strong>Website:</strong> <a href="https://cardfit.me" target="_blank" rel="noopener noreferrer" className="underline font-bold hover:text-ink">cardfit.me</a> · <strong>Industry:</strong> FinTech · <strong>Timeline:</strong> Live<br/>
-                <strong>Role:</strong> Founder, Product Manager & Product Designer
-              </p>
+            </div>
+
+            {/* Listed vertically below the logo, before the story */}
+            <div className="text-xs sm:text-sm font-story space-y-1 text-ink/85">
+              <p><strong>Website:</strong> <a href="https://cardfit.me" target="_blank" rel="noopener noreferrer" className="underline font-bold hover:text-ink">cardfit.me</a></p>
+              <p><strong>Industry:</strong> FinTech</p>
+              <p><strong>Timeline:</strong> Live</p>
+              <p><strong>Role:</strong> Founder, Product Manager & Product Designer</p>
             </div>
           </div>
           
@@ -347,29 +353,33 @@ export function Popups({ activePopup, onClose, onNavigate }: PopupsProps) {
 
       {activePopup === 'PROJECT_NOOR' && (
         <Window key="popup-noor" onBack={() => onNavigate('PROJECTS')} maxWidthClass="max-w-4xl sm:w-[90vw] lg:w-[82vw] max-w-[920px]">
-          <div className="mb-4 sm:mb-6 flex items-center gap-3 sm:gap-4">
-            <a 
-              href="https://apps.apple.com/us/app/noor-azaan/id6759352271" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="w-12 h-12 sm:w-16 sm:h-16 pixel-box bg-[#cbddd5] border-2 border-ink flex items-center justify-center flex-shrink-0 overflow-hidden p-1 shadow-xs hover:scale-105 transition-transform"
-              title="View Noor Azaan on the App Store"
-            >
-              <img 
-                src="/noor_azaan_icon.jpg" 
-                alt="Noor Azaan Icon" 
-                className="w-full h-full object-contain" 
-                referrerPolicy="no-referrer"
-              />
-            </a>
-            <div>
+          <div className="mb-4 sm:mb-5 pb-3 border-b-2 border-ink/20">
+            <div className="flex items-center gap-3 sm:gap-4 mb-3">
+              <a 
+                href="https://apps.apple.com/us/app/noor-azaan/id6759352271" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-12 h-12 sm:w-16 sm:h-16 pixel-box bg-[#cbddd5] border-2 border-ink flex items-center justify-center flex-shrink-0 overflow-hidden p-1 shadow-xs hover:scale-105 transition-transform"
+                title="View Noor Azaan on the App Store"
+              >
+                <img 
+                  src="/noor_azaan_icon.jpg" 
+                  alt="Noor Azaan Icon" 
+                  className="w-full h-full object-contain" 
+                  referrerPolicy="no-referrer"
+                />
+              </a>
               <h3 className="text-base sm:text-lg md:text-xl font-bold leading-tight text-ink font-pixel">
                 Noor Azaan
               </h3>
-              <p className="opacity-85 text-xs sm:text-sm font-story mt-1.5 leading-relaxed">
-                <strong>Platform:</strong> <a href="https://apps.apple.com/us/app/noor-azaan/id6759352271" target="_blank" rel="noopener noreferrer" className="underline font-bold hover:text-ink">iOS App Store</a> · <strong>Industry:</strong> Consumer Mobile · <strong>Timeline:</strong> Live<br/>
-                <strong>Role:</strong> Founder, Product Manager & Product Designer
-              </p>
+            </div>
+
+            {/* Listed vertically below the logo, before the story */}
+            <div className="text-xs sm:text-sm font-story space-y-1 text-ink/85">
+              <p><strong>Platform:</strong> <a href="https://apps.apple.com/us/app/noor-azaan/id6759352271" target="_blank" rel="noopener noreferrer" className="underline font-bold hover:text-ink">iOS App Store</a></p>
+              <p><strong>Industry:</strong> Consumer Mobile</p>
+              <p><strong>Timeline:</strong> Live</p>
+              <p><strong>Role:</strong> Founder, Product Manager & Product Designer</p>
             </div>
           </div>
           
@@ -402,29 +412,33 @@ export function Popups({ activePopup, onClose, onNavigate }: PopupsProps) {
 
       {activePopup === 'PROJECT_RMSA' && (
         <Window key="popup-rmsa" onBack={() => onNavigate('PROJECTS')} maxWidthClass="max-w-4xl sm:w-[90vw] lg:w-[82vw] max-w-[920px]">
-          <div className="mb-4 sm:mb-6 flex items-center gap-3 sm:gap-4">
-            <a 
-              href="https://www.haverford.edu/marketing-and-communications/news/looking-beyond-brochure" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="w-12 h-12 sm:w-16 sm:h-16 pixel-box bg-[#e3dec9] border-2 border-ink flex items-center justify-center flex-shrink-0 overflow-hidden p-0.5 shadow-xs hover:scale-105 transition-transform"
-              title="Read Haverford Feature Article"
-            >
-              <img 
-                src="/ratemy_preview.jpg" 
-                alt="RateMySemesterAbroad Feature" 
-                className="w-full h-full object-cover" 
-                referrerPolicy="no-referrer"
-              />
-            </a>
-            <div>
+          <div className="mb-4 sm:mb-5 pb-3 border-b-2 border-ink/20">
+            <div className="flex items-center gap-3 sm:gap-4 mb-3">
+              <a 
+                href="https://www.haverford.edu/marketing-and-communications/news/looking-beyond-brochure" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-12 h-12 sm:w-16 sm:h-16 pixel-box bg-[#e3dec9] border-2 border-ink flex items-center justify-center flex-shrink-0 overflow-hidden p-0.5 shadow-xs hover:scale-105 transition-transform"
+                title="Read Haverford Feature Article"
+              >
+                <img 
+                  src="/ratemy_preview.jpg" 
+                  alt="RateMySemesterAbroad Feature" 
+                  className="w-full h-full object-cover" 
+                  referrerPolicy="no-referrer"
+                />
+              </a>
               <h3 className="text-base sm:text-lg md:text-xl font-bold leading-tight text-ink font-pixel">
                 RateMySemesterAbroad
               </h3>
-              <p className="opacity-85 text-xs sm:text-sm font-story mt-1.5 leading-relaxed">
-                <strong>Publication:</strong> <a href="https://www.haverford.edu/marketing-and-communications/news/looking-beyond-brochure" target="_blank" rel="noopener noreferrer" className="underline font-bold hover:text-ink">Haverford College News</a> · <strong>Industry:</strong> EdTech, Travel · <strong>Timeline:</strong> 2025<br/>
-                <strong>Role:</strong> Founder & Product Manager
-              </p>
+            </div>
+
+            {/* Listed vertically below the logo, before the story */}
+            <div className="text-xs sm:text-sm font-story space-y-1 text-ink/85">
+              <p><strong>Publication:</strong> <a href="https://www.haverford.edu/marketing-and-communications/news/looking-beyond-brochure" target="_blank" rel="noopener noreferrer" className="underline font-bold hover:text-ink">Haverford College News</a></p>
+              <p><strong>Industry:</strong> EdTech, Travel</p>
+              <p><strong>Timeline:</strong> 2025</p>
+              <p><strong>Role:</strong> Founder & Product Manager</p>
             </div>
           </div>
           
@@ -514,7 +528,7 @@ export function Popups({ activePopup, onClose, onNavigate }: PopupsProps) {
       )}
 
       {activePopup === 'CONTACT' && (
-        <Window key="popup-contact" title="2 — HOW DO I CONTACT YOU?">
+        <Window key="popup-contact" title="3 — LEAVE A MESSAGE">
           <div className="space-y-0">
             
             <div className="flex items-center gap-3 py-3 border-b-2 border-ink/20">

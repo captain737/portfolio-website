@@ -66,17 +66,18 @@ export default function App() {
   const [activePopup, setActivePopup] = useState<PopupState>('NONE');
   const [isHungUp, setIsHungUp] = useState(false);
   const [showText, setShowText] = useState(false);
-  const [crtEnabled, setCrtEnabled] = useState(true);
   
   const [typeIndex, setTypeIndex] = useState(0);
   
   const part1 = "Hi, you've reached Pragya. I'm away right now, but feel free to stick around. ";
   const part2 = "Ring 1";
-  const part3 = " to look at my work and ";
-  const part4 = "Ring 2";
-  const part5 = " to leave me a message";
+  const part3 = " to learn more about me, ";
+  const part4 = "ring 2";
+  const part5 = " to look at my personal projects and ";
+  const part6 = "ring 3";
+  const part7 = " to leave me a message";
   
-  const fullTextLength = part1.length + part2.length + part3.length + part4.length + part5.length;
+  const fullTextLength = part1.length + part2.length + part3.length + part4.length + part5.length + part6.length + part7.length;
 
   const handleTextStart = () => {
     setShowText(true);
@@ -88,11 +89,11 @@ export default function App() {
       return;
     }
     
-    // Only display popup if text has fully been displayed
-    if (showText && typeIndex === fullTextLength) {
-      if (num === '1') setActivePopup('PROJECTS');
-      if (num === '2') setActivePopup('CONTACT');
-      if (num === '3') setActivePopup('EXPERIENCE');
+    // Display popup when message is active
+    if (showText) {
+      if (num === '1') setActivePopup('WHO');
+      if (num === '2') setActivePopup('PROJECTS');
+      if (num === '3') setActivePopup('CONTACT');
     }
   };
 
@@ -160,6 +161,8 @@ export default function App() {
     const p3 = getChunk(part3);
     const p4 = getChunk(part4);
     const p5 = getChunk(part5);
+    const p6 = getChunk(part6);
+    const p7 = getChunk(part7);
 
     return (
       <>
@@ -182,6 +185,15 @@ export default function App() {
           </span>
         )}
         {p5}
+        {p6 && (
+          <span 
+            className="text-red-500 underline underline-offset-4 cursor-pointer hover:text-red-700 transition-colors"
+            onClick={() => landingSceneRef.current?.simulateDial('3')}
+          >
+            {p6}
+          </span>
+        )}
+        {p7}
       </>
     );
   };
@@ -189,11 +201,8 @@ export default function App() {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center p-2 sm:p-4 relative overflow-hidden">
       
-      {/* Retro CRT Scanlines & Screen Mesh Overlay */}
-      {crtEnabled && <div className="crt-scanlines" />}
-
       {/* Retro 8-Bit HUD Header */}
-      <div className="fixed top-2.5 left-2.5 right-2.5 sm:top-4 sm:left-4 sm:right-4 z-30 flex items-center justify-between pointer-events-none select-none">
+      <div className="fixed top-2.5 left-2.5 sm:top-4 sm:left-4 z-30 pointer-events-none select-none">
         <a 
           href="https://pragyasilwal.com"
           target="_blank"
@@ -204,14 +213,6 @@ export default function App() {
           <span className="w-2 h-2 bg-emerald-500 inline-block animate-pulse flex-shrink-0" />
           <span className="font-pixel text-[9px] sm:text-[11px] font-bold tracking-wider text-current">pragyasilwal.com</span>
         </a>
-        <button
-          type="button"
-          onClick={() => setCrtEnabled(prev => !prev)}
-          className="pixel-btn pointer-events-auto px-2.5 py-1 text-[8px] sm:text-[10px] font-pixel bg-[#fdfaf6] text-ink hover:bg-ink hover:text-paper cursor-pointer uppercase transition-colors"
-          title="Toggle CRT Scanline Effect"
-        >
-          CRT: {crtEnabled ? 'ON' : 'OFF'}
-        </button>
       </div>
 
       {/* Background overlay for hangup state */}
@@ -251,9 +252,15 @@ export default function App() {
                 <span className="w-2 h-2 bg-red-500 inline-block animate-pulse" />
                 PHONE MESSAGE
               </span>
-              <span className="font-pixel text-[8px] text-ink/60">PRESS 1 / 2</span>
+              <span className="font-pixel text-[8px] text-ink/60">PRESS 1 / 2 / 3</span>
             </div>
-            <p className="font-pixel-body text-sm sm:text-base md:text-lg leading-snug sm:leading-normal font-medium text-ink">
+            <p 
+              onClick={() => {
+                if (typeIndex < fullTextLength) setTypeIndex(fullTextLength);
+              }}
+              className="font-pixel-body text-sm sm:text-base md:text-lg leading-snug sm:leading-normal font-medium text-ink cursor-pointer"
+              title={typeIndex < fullTextLength ? "Click to reveal full text" : undefined}
+            >
               {renderText()}
               {typeIndex === fullTextLength && (
                 <span className="inline-block ml-1 animate-bounce text-pink-600 font-pixel text-xs">▼</span>
