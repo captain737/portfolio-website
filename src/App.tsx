@@ -170,7 +170,12 @@ export default function App() {
         {p2 && (
           <span 
             className="text-red-500 underline underline-offset-4 cursor-pointer hover:text-red-700 transition-colors"
-            onClick={() => landingSceneRef.current?.simulateDial('1')}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (activePopup !== 'WHO') {
+                landingSceneRef.current?.simulateDial('1');
+              }
+            }}
           >
             {p2}
           </span>
@@ -179,7 +184,12 @@ export default function App() {
         {p4 && (
           <span 
             className="text-red-500 underline underline-offset-4 cursor-pointer hover:text-red-700 transition-colors"
-            onClick={() => landingSceneRef.current?.simulateDial('2')}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (activePopup !== 'PROJECTS') {
+                landingSceneRef.current?.simulateDial('2');
+              }
+            }}
           >
             {p4}
           </span>
@@ -188,7 +198,12 @@ export default function App() {
         {p6 && (
           <span 
             className="text-red-500 underline underline-offset-4 cursor-pointer hover:text-red-700 transition-colors"
-            onClick={() => landingSceneRef.current?.simulateDial('3')}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (activePopup !== 'CONTACT') {
+                landingSceneRef.current?.simulateDial('3');
+              }
+            }}
           >
             {p6}
           </span>

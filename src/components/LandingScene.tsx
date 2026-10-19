@@ -227,6 +227,8 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
   });
 
   const activeDragInfo = useRef({ holeIndex: -1, startAngle: 0, maxRotation: 0, action: '', dialCx: 0, dialCy: 0 });
+  const isDialingRef = useRef(false);
+  const pointerStartPos = useRef({ x: 0, y: 0, time: 0 });
 
   const triggerRing = () => {
     if (hasBeenPoked) return;
@@ -270,20 +272,27 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
 
   useImperativeHandle(ref, () => ({
     simulateDial: async (num: string) => {
-      if (isDragging || isWobbling) return;
-      const holeIndex = holesData.findIndex(h => h.num === num);
-      if (holeIndex === -1) return;
-      
-      const maxRot = 40 - (-35 - (holeIndex * 26));
-      await animate(rotation, maxRot, { duration: maxRot * 0.0035, ease: "easeIn" });
-      await new Promise(r => setTimeout(r, 150));
-      await animate(rotation, 0, { type: "spring", stiffness: 80, damping: 15 });
-      onDial(num);
+      if (isDragging || isWobbling || isDialingRef.current) return;
+      isDialingRef.current = true;
+      try {
+        const holeIndex = holesData.findIndex(h => h.num === num);
+        if (holeIndex === -1) return;
+        
+        const maxRot = 40 - (-35 - (holeIndex * 26));
+        // Snappy smooth rotation: wind up with smooth ease
+        await animate(rotation, maxRot, { duration: Math.max(0.14, Math.min(0.25, maxRot * 0.0025)), ease: [0.25, 0.1, 0.25, 1] });
+        await new Promise(r => setTimeout(r, 60));
+        // Spring return back to home position
+        await animate(rotation, 0, { type: "spring", stiffness: 120, damping: 14 });
+        onDial(num);
+      } finally {
+        isDialingRef.current = false;
+      }
     }
   }));
 
   const handlePointerDown = (e: PointerEvent<SVGGElement>, index: number, action: string) => {
-    if (!svgRef.current || isWobbling) return;
+    if (!svgRef.current || isWobbling || isDialingRef.current) return;
     hasAutoTurned.current = true;
     e.currentTarget.setPointerCapture(e.pointerId);
     
@@ -293,6 +302,7 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
     
     const angle = Math.atan2(e.clientY - dialCy, e.clientX - dialCx) * (180 / Math.PI);
     
+    pointerStartPos.current = { x: e.clientX, y: e.clientY, time: Date.now() };
     activeDragInfo.current = { holeIndex: index, startAngle: angle, maxRotation: 40 - (-35 - (index * 26)), action, dialCx, dialCy };
     setIsDragging(true);
   };
@@ -317,9 +327,33 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
     
     const { maxRotation, action } = activeDragInfo.current;
     const currentRot = rotation.get();
+    const dx = e.clientX - pointerStartPos.current.x;
+    const dy = e.clientY - pointerStartPos.current.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const dt = Date.now() - pointerStartPos.current.time;
+
+    // Direct tap on the hole
+    if (dist < 14 && dt < 350 && currentRot < 15) {
+      if (!isDialingRef.current) {
+        if (!hasBeenPoked) {
+          triggerRing();
+        } else {
+          isDialingRef.current = true;
+          try {
+            await animate(rotation, maxRotation, { duration: Math.max(0.14, Math.min(0.25, maxRotation * 0.0025)), ease: [0.25, 0.1, 0.25, 1] });
+            await new Promise(r => setTimeout(r, 60));
+            await animate(rotation, 0, { type: "spring", stiffness: 120, damping: 14 });
+            onDial(action);
+          } finally {
+            isDialingRef.current = false;
+          }
+        }
+      }
+      return;
+    }
     
     if (currentRot > maxRotation * 0.85) {
-      await animate(rotation, 0, { type: "spring", stiffness: 80, damping: 15, mass: 1 });
+      await animate(rotation, 0, { type: "spring", stiffness: 90, damping: 14, mass: 1 });
       
       // Trigger ring ONLY if it hasn't been poked yet
       if (!hasBeenPoked) {
@@ -335,18 +369,22 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
   const handleKeyDown = async (e: KeyboardEvent<SVGGElement>, index: number, action: string) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (isDragging) return;
+      if (isDragging || isDialingRef.current) return;
       hasAutoTurned.current = true;
       const maxRotation = 40 - (-35 - (index * 26));
-      await animate(rotation, maxRotation, { duration: maxRotation * 0.0035, ease: "easeIn" });
-      await new Promise(r => setTimeout(r, 150));
-      await animate(rotation, 0, { type: "spring", stiffness: 80, damping: 15 });
-      
-      // Trigger ring ONLY if it hasn't been poked yet
-      if (!hasBeenPoked) {
-        triggerRing();
-      } else {
-        onDial(action);
+      isDialingRef.current = true;
+      try {
+        await animate(rotation, maxRotation, { duration: Math.max(0.14, Math.min(0.25, maxRotation * 0.0025)), ease: [0.25, 0.1, 0.25, 1] });
+        await new Promise(r => setTimeout(r, 60));
+        await animate(rotation, 0, { type: "spring", stiffness: 120, damping: 14 });
+        
+        if (!hasBeenPoked) {
+          triggerRing();
+        } else {
+          onDial(action);
+        }
+      } finally {
+        isDialingRef.current = false;
       }
     }
   };
@@ -375,9 +413,7 @@ export const LandingScene = forwardRef<LandingSceneRef, LandingSceneProps>(({ on
 
   return (
     <div className="w-[min(88vw,calc(72vh*800/900))] max-w-[680px] aspect-[800/900] relative overflow-visible flex items-center justify-center select-none my-auto">
-      <svg ref={svgRef} className="w-full h-full relative z-[1] block overflow-visible" viewBox="0 0 800 900" role="img" aria-labelledby="title desc">
-        <title id="title">Hand-sketched pink rotary telephone</title>
-        <desc id="desc">A sketchy, hand-drawn pink rotary telephone. Click the dial holes to explore the portfolio.</desc>
+      <svg ref={svgRef} className="w-full h-full relative z-[1] block overflow-visible" viewBox="0 0 800 900" role="img" aria-label="Interactive retro telephone and desk scene">
 
         <defs>
           <filter id="rough" x="-20%" y="-20%" width="140%" height="140%">
