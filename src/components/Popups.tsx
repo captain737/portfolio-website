@@ -182,9 +182,9 @@ export function Popups({ activePopup, onClose, onNavigate }: PopupsProps) {
           y: 6,
           transition: { duration: 0.15, ease: "easeIn" } 
         }}
-        className={`relative pointer-events-auto w-full ${maxWidthClass} max-h-[min(86vh,740px)] flex flex-col pixel-box p-3.5 sm:p-5 md:p-6 bg-[#fdfaf6] z-10 overflow-hidden ${className}`}
+        className={`relative pointer-events-auto w-full ${maxWidthClass} max-h-[min(73vh,630px)] flex flex-col pixel-box p-3 sm:p-4 md:p-5 bg-[#fdfaf6] z-10 overflow-hidden ${className}`}
       >
-        <div className="flex justify-between items-center mb-3 sm:mb-4 pb-2 sm:pb-3 border-b-2 border-ink flex-shrink-0">
+        <div className="flex justify-between items-center mb-2.5 sm:mb-3 pb-2 sm:pb-2.5 border-b-2 border-ink flex-shrink-0">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             {onBack && (
               <button 
@@ -221,10 +221,10 @@ export function Popups({ activePopup, onClose, onNavigate }: PopupsProps) {
       {activePopup === 'WHO' && (
         <Window 
           key="popup-who" 
-          maxWidthClass="max-w-4xl w-full sm:w-[94vw] lg:w-[88vw]"
-          className="h-auto min-h-[min(85vh,540px)]"
+          maxWidthClass="max-w-3xl w-full sm:w-[80vw] lg:w-[75vw]"
+          className="h-auto min-h-[min(72vh,460px)]"
         >
-          <div className="space-y-4 sm:space-y-5 text-black text-center max-w-3xl mx-auto my-auto py-3 px-2 sm:px-6">
+          <div className="space-y-3.5 sm:space-y-4 text-black text-center max-w-2xl mx-auto my-auto py-2.5 px-2 sm:px-5">
             {/* Red bold greeting line - centered */}
             <p className="font-bold text-base sm:text-lg md:text-xl text-red-600 font-story text-center">
               Hey, I'm Pragya! I'm an Economics and Data Science student at Bryn Mawr College.
@@ -245,7 +245,7 @@ export function Popups({ activePopup, onClose, onNavigate }: PopupsProps) {
       )}
 
       {activePopup === 'PROJECTS' && (
-        <Window key="popup-projects" title="Personal Projects" maxWidthClass="max-w-4xl w-full sm:w-[94vw] lg:w-[88vw]">
+        <Window key="popup-projects" title="Personal Projects" maxWidthClass="max-w-3xl w-full sm:w-[80vw] lg:w-[75vw]">
           <div className="flex flex-col gap-3 sm:gap-3.5">
             {/* CardFit */}
             <div className="p-2.5 sm:p-3 pixel-box bg-[#fbf9f2] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 hover:bg-white transition-colors group">
